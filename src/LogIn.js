@@ -6,8 +6,8 @@ import {
 
 class LogIn extends Component {
     handleResponse = (data) => {
-        console.log(data);
         localStorage.setItem('user', JSON.stringify(data));
+        localStorage.setItem('login_date', new Date());
         this.props.history.push("/feed");
     };
 
@@ -19,11 +19,11 @@ class LogIn extends Component {
         return (
             <FacebookProvider>
                 <Login
-                    scope="email"
+                    scope="email, user_posts, user_photos"
                     onResponse={this.handleResponse}
                     onError={this.handleError}
                 >
-                    <span>Login via Facebook</span>
+                    <button type="button" className="btn btn-primary">Login via Facebook</button>
                 </Login>
             </FacebookProvider>
         );

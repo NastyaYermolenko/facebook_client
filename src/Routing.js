@@ -6,27 +6,38 @@ import {
 } from "react-router-dom";
 import Feed from "./Feed";
 import LogIn from "./LogIn";
+import Profile from "./Profile";
 
 
 class Routing extends Component {
 
+    isLoggedIn(){
+        return localStorage.getItem('user') &&
+            Date.now() - Date.parse(localStorage.getItem("login_date")) <= 3*60*60*1000;
+    }
     render() {
         return (
             <Router>
                 <div>
                     <Route exact path="/" render={() => (
-                        localStorage.getItem('user') ? (<Redirect to="/feed"/>)
+                        this.isLoggedIn() ?
+                            (<Redirect to="/feed"/>)
                             : (<Redirect to="/login"/>)
                     )}/>
 
                     <Route path="/feed" render={() => (
-                        localStorage.getItem('user') ?
-                            (<Feed/>)
+                        this.isLoggedIn() ?
+                                (<Feed/>)
                             : (<Redirect to="/login"/>))}/>
                     <Route path="/login" render={() => (
-                        localStorage.getItem('user') ?
+                        this.isLoggedIn() ?
                             (<Redirect to="/feed"/>)
                             : (<LogIn/>))}/>
+
+                    <Route path="/profile" render={() => (
+                        this.isLoggedIn() ?
+                            (<Profile/>)
+                            : (<Redirect to="/login"/>))}/>
                 </div>
             </Router>
 
